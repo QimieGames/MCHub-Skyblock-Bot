@@ -1,0 +1,28 @@
+{
+  "name": "mchub-skyblock-bot",
+  "version": "1.0.0",
+  "description": "A Simple Discord Bot To Alert You About Chat Events That Happened On MCHub - Sun Skyblock",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/QimieGames/MCHub-Skyblock-Bot.git"
+  },
+  "author": "QimieGames",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/QimieGames/MCHub-Skyblock-Bot/issues"
+  },
+  "homepage": "https://github.com/QimieGames/MCHub-Skyblock-Bot#readme",
+  "dependencies": {
+    "@discordjs/builders": "^0.15.0",
+    "@discordjs/rest": "^0.5.0",
+    "discord-api-types": "^0.36.0",
+    "discord.js": "^13.8.1",
+    "dotenv": "^16.0.1",
+    "mineflayer": "^4.3.0",
+    "node": "^18.4.0"
+  }
+}
