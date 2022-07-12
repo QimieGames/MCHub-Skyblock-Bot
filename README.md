@@ -1,6 +1,6 @@
 # MCHub-Skyblock-Discord-Bot
 
-<iframe src="https://discord.com/widget?id=992165457534656582&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
+[![Community Discord](https://img.shields.io/static/v1.svg?label=COMMUNITY&message=DISCORD&color=blue&logo=discord&style=for-the-badge)](https://discord.gg/RtZyHNeM8b)
 
 ## FEATURES:
 #### - Daily, Weekly & Monthly Giveaway Winners Alert.
