@@ -1,28 +1,21 @@
+const nodeFS = require('fs');
+
 module.exports = {
     data: {
         name: 'error'
     },
     execute(errorInfo, discordBot, ingameBot, isDiscordBotReady, isIngameBotReady){
-        try {
-            switch(errorInfo) {
-                default:
-                    console.log('[MCHSB] Error occured! Shutting down the bot...');
-                        discordBot.destroy();
-                        ingameBot.end;
-                        console.log(`[MCHSB] Error: ${errorInfo}`);
-                        process.exit(1);
-                    break;
-            }
-        } catch {
-            console.log('[MCHSB] Error occured while executing error handler! Shutting down the bot...');
-			try {
-				discordBot.destroy();
-				ingameBot.end;
-				return isDiscordBotReady = false, isIngameBotReady = false, process.exit(1);
-			} catch {
-				console.log('[MCHSB] Error occured while restarting the bot properly!');
-				return isDiscordBotReady = false, isIngameBotReady = false, process.exit(1);
-			}
-        }
+
+        const errorOccuredDate = new Date();
+
+        const errorLogsDIR = '././error_logs/';
+
+        const errorLogFileName = `ERROR_LOG-${errorOccuredDate.getDate()}_${errorOccuredDate.getMonth() + 1}_${errorOccuredDate.getFullYear()}-${errorOccuredDate.getHours()}_${errorOccuredDate.getMinutes()}_${errorOccuredDate.getSeconds()}`;
+
+        nodeFS.appendFileSync(`${String(errorLogsDIR)}${String(errorLogFileName)}.json`, String(errorInfo), 'utf-8');
+        console.log(`[MCHSB] Error occured! Restarting the bot...`);
+        discordBot.destroy();
+        ingameBot.end;
+        return isDiscordBotReady = false, isIngameBotReady = false, process.exit(0);
     }
 }

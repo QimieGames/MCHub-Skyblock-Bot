@@ -4,14 +4,14 @@ module.exports = {
     data: {
         name: 'dungeon_opened'
     },
-    async execute(regexMatches, discordBot, constantConfigValue, isDiscordBotReady, isIngameBotReady){
+    async execute(regexMatches, discordBot, configValue, guildID){
         try {
-
-            const guildID = constantConfigValue.discord_bot.guild_id;
     
-            const dungeonOpenedAlertChannelID = constantConfigValue.discord_channels.dungeon;
+            const dungeonOpenedAlertChannelID = configValue.discord_channels.dungeon_opened;
 
-            const dungeonOpenedPingRoleID = constantConfigValue.roles_id.dungeon_ping;
+            const dungeonOpenedAlertChannelName = discordBot.guilds.cache.get(guildID).channels.cache.get(dungeonOpenedAlertChannelID).name;
+
+            const dungeonOpenedPingRoleID = configValue.roles_id.dungeon_opened_ping;
 
             const dungeonOpenedEmbed = new DiscordJS.MessageEmbed()
                 .setColor('#eb8334')
@@ -23,27 +23,22 @@ module.exports = {
             if(discordBot.guilds.cache.get(guildID).channels.cache.get(dungeonOpenedAlertChannelID) != undefined){
                 if(discordBot.guilds.cache.get(guildID).me.permissionsIn(dungeonOpenedAlertChannelID).has('VIEW_CHANNEL') === true){
                     if(discordBot.guilds.cache.get(guildID).me.permissionsIn(dungeonOpenedAlertChannelID).has('SEND_MESSAGES') === true){
-                        discordBot.guilds.cache.get(guildID).channels.cache.get(dungeonOpenedAlertChannelID).send({ content: `|| <@&${dungeonOpenedPingRoleID}> ||`, embeds: [dungeonOpenedEmbed] });
+                        await discordBot.guilds.cache.get(guildID).channels.cache.get(dungeonOpenedAlertChannelID).send({ content: `|| <@&${dungeonOpenedPingRoleID}> ||`, embeds: [dungeonOpenedEmbed] });
+                        return true;
                     } else {
-                        console.log('[MCHSB] Error occured while sending dungeon opened alert in #' + discordBot.guilds.cache.get(guildID).channels.cache.get(dungeonOpenedAlertChannelID).name + '!');
+                        console.log(`[MCHSB] Error occured while sending dungeon opened alert in #${dungeonOpenedAlertChannelName}!`);
+                        return false;
                     }
                 } else {
-                    console.log('[MCHSB] Error occured while viewing #' + discordBot.guilds.cache.get(guildID).channels.cache.get(dungeonOpenedAlertChannelID).name + '!');
+                    console.log(`[MCHSB] Error occured while viewing #${dungeonOpenedAlertChannelName}!`);
+                    return false;
                 }
             } else {
                 console.log('[MCHSB] Error occured while finding dungeon opened alert channel!');
+                return false;
             }
-            return isDiscordBotReady = true, isIngameBotReady = true;
         } catch {
-            console.log('[MCHSB] Error occured while executing dungeon opened alert handler! Restarting the bot...');
-			try {
-				discordBot.destroy();
-				ingameBot.end;
-				return isDiscordBotReady = false, isIngameBotReady = false, process.exit(0);
-			} catch {
-				console.log('[MCHSB] Error occured while restarting the bot properly!');
-				return isDiscordBotReady = false, isIngameBotReady = false, process.exit(0);
-			}
+            return 'ERROR';
         }
     }
 }

@@ -2,3 +2,4 @@
 config.json
 node_modules/
 *.bat
+error_logs/*

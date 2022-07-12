@@ -2,55 +2,37 @@ module.exports = {
     data: {
         name: 'chat'
     },
-    async execute(chatMSGRaw, chatType, constantConfigValue, discordBot, isIngameBotReady, isDiscordBotReady){
-        if(chatType === 'game_info') return;
+    async execute(chatMSGRaw, configValue, discordBot, guildID, isIngameBotReady, isDiscordBotReady){
+        async function logIngameChatToConsole(){
+            if(configValue.features.log_ingame_chat_to_console === 'true') return console.log(chatMSGRaw.toAnsi());
+        }
+        async function logIngameChatToDiscord(){
 
-        async function logIngameChatToDiscord(chatMSG){
-            
-            const guildID = constantConfigValue.discord_bot.guild_id;
+            if(configValue.features.log_ingame_chat_to_discord === 'false') return;
         
-            const ingameChatChannelID = constantConfigValue.discord_channels.ingame_chat;
+            const ingameChatChannelID = configValue.discord_channels.ingame_chat;
+
+            const ingameChatChannelName = discordBot.guilds.cache.get(guildID).channels.cache.get(ingameChatChannelID).name;
             
-            if(constantConfigValue.features.discord_ingame_chat === 'true'){
-                if(chatMSG.toString().length >= 5){
-                    if(discordBot.guilds.cache.get(guildID).channels.cache.get(ingameChatChannelID) != undefined){
-                        if(discordBot.guilds.cache.get(guildID).me.permissionsIn(ingameChatChannelID).has('VIEW_CHANNEL') === true){
-                            if(discordBot.guilds.cache.get(guildID).me.permissionsIn(ingameChatChannelID).has('SEND_MESSAGES') === true){
-                                discordBot.guilds.cache.get(guildID).channels.cache.get(ingameChatChannelID).send('```' + chatMSG + '```');
-                            } else {
-                                console.log('[MCHSB] Error occured while sending chat messages in #' + discordBot.guilds.cache.get(guildID).channels.cache.get(ingameChatChannelID).name + '!');
-                            }
+            if(chatMSGRaw.toString().length >= 5){
+                if(discordBot.guilds.cache.get(guildID).channels.cache.get(ingameChatChannelID) != undefined){
+                    if(discordBot.guilds.cache.get(guildID).me.permissionsIn(ingameChatChannelID).has('VIEW_CHANNEL') === true){
+                        if(discordBot.guilds.cache.get(guildID).me.permissionsIn(ingameChatChannelID).has('SEND_MESSAGES') === true){
+                            discordBot.guilds.cache.get(guildID).channels.cache.get(ingameChatChannelID).send('```' + chatMSGRaw + '```');
                         } else {
-                            console.log('[MCHSB] Error occured while sending chat messages in #' + discordBot.guilds.cache.get(guildID).channels.cache.get(ingameChatChannelID).name + '!');
+                            console.log(`[MCHSB] Error occured while sending chat messages in #${ingameChatChannelName}!`);
                         }
                     } else {
-                        console.log('[MCHSB] Error occured while finding ingame chat channel!');
+                        console.log(`[MCHSB] Error occured while sending chat messages in #${ingameChatChannelName}!`);
                     }
+                } else {
+                    console.log('[MCHSB] Error occured while finding ingame chat channel!');
                 }
             }
         }
-        
-        async function logIngameChatToConsole(chatMSG){
-            if(constantConfigValue.features.console_ingame_chat === 'true'){
-                console.log(chatMSG.toAnsi());
-            }
-        }
-
-        try {
-            logIngameChatToConsole(chatMSGRaw).then(async () => {
-                logIngameChatToDiscord(chatMSGRaw);
-            });
+        logIngameChatToConsole().then(() => {
+            logIngameChatToDiscord();
             return isDiscordBotReady = true, isIngameBotReady = true;
-        } catch {
-            console.log('[MCHSB] Error occured while executing chat handler! Restarting the bot...');
-			try {
-				discordBot.destroy();
-				ingameBot.end;
-				return isDiscordBotReady = false, isIngameBotReady = false, process.exit(0);
-			} catch {
-				console.log('[MCHSB] Error occured while restarting the bot properly!');
-				return isDiscordBotReady = false, isIngameBotReady = false, process.exit(0);
-			}
-        }
+        });
     }
 }

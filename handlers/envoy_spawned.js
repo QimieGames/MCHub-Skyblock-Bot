@@ -4,14 +4,14 @@ module.exports = {
     data: {
         name: 'envoy_spawned'
     },
-    async execute(regexMatches, discordBot, constantConfigValue, isDiscordBotReady, isIngameBotReady){
+    async execute(regexMatches, discordBot, configValue, guildID){
         try {
-
-            const guildID = constantConfigValue.discord_bot.guild_id;
     
-            const envoySpawnedAlertChannelID = constantConfigValue.discord_channels.envoy;
+            const envoySpawnedAlertChannelID = configValue.discord_channels.envoy_spawned;
 
-            const envoySpawnedPingRoleID = constantConfigValue.roles_id.envoy_ping;
+            const envoySpawnedAlertChannelName = discordBot.guilds.cache.get(guildID).channels.cache.get(envoySpawnedAlertChannelID).name;
+
+            const envoySpawnedPingRoleID = configValue.roles_id.envoy_ping;
 
             const envoySpawnedEmbed = new DiscordJS.MessageEmbed()
                 .setColor('#eb8334')
@@ -23,27 +23,22 @@ module.exports = {
             if(discordBot.guilds.cache.get(guildID).channels.cache.get(envoySpawnedAlertChannelID) != undefined){
                 if(discordBot.guilds.cache.get(guildID).me.permissionsIn(envoySpawnedAlertChannelID).has('VIEW_CHANNEL') === true){
                     if(discordBot.guilds.cache.get(guildID).me.permissionsIn(envoySpawnedAlertChannelID).has('SEND_MESSAGES') === true){
-                        discordBot.guilds.cache.get(guildID).channels.cache.get(envoySpawnedAlertChannelID).send({content: `|| <@&${envoySpawnedPingRoleID}> ||`, embeds: [envoySpawnedEmbed] });
+                        await discordBot.guilds.cache.get(guildID).channels.cache.get(envoySpawnedAlertChannelID).send({content: `|| <@&${envoySpawnedPingRoleID}> ||`, embeds: [envoySpawnedEmbed] });
+                        return true;
                     } else {
-                        console.log('[MCHSB] Error occured while sending envoy spawned alert in #' + discordBot.guilds.cache.get(guildID).channels.cache.get(envoySpawnedAlertChannelID).name + '!');
+                        console.log(`[MCHSB] Error occured while sending envoy spawned alert in #${envoySpawnedAlertChannelName}!`);
+                        return false;
                     }
                 } else {
-                    console.log('[MCHSB] Error occured while viewing #' + discordBot.guilds.cache.get(guildID).channels.cache.get(envoySpawnedAlertChannelID).name + '!');
+                    console.log(`[MCHSB] Error occured while viewing #${envoySpawnedAlertChannelName}!`);
+                    return false;
                 }
             } else {
                 console.log('[MCHSB] Error occured while finding envoy spawned alert channel!');
+                return false;
             }
-            return isDiscordBotReady = true, isIngameBotReady = true;
         } catch {
-            console.log('[MCHSB] Error occured while executing envoy spawned alert handler! Restarting the bot...');
-			try {
-				discordBot.destroy();
-				ingameBot.end;
-				return isDiscordBotReady = false, isIngameBotReady = false, process.exit(0);
-			} catch {
-				console.log('[MCHSB] Error occured while restarting the bot properly!');
-				return isDiscordBotReady = false, isIngameBotReady = false, process.exit(0);
-			}
+            return 'ERROR';
         }
     }
 }
