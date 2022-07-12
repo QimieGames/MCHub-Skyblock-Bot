@@ -1,5 +1,6 @@
 # MCHub-Skyblock-Discord-Bot
 
+<iframe src="https://discord.com/widget?id=992165457534656582&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
 
 ## FEATURES:
 #### - Daily, Weekly & Monthly Giveaway Winners Alert.
@@ -11,7 +12,7 @@
 #### - Log Command Usage & Chat Alert Status.
 #### - Blacklist People From Using The Bot.
 
-## DEPENDENCIES
+## DEPENDENCIES:
 #### 1. [Node.js](https://github.com/nodejs/node "Node.js")
 #### 2. [dotenv](https://github.com/motdotla/dotenv "dotenv")
 #### 3. [discord.js](https://github.com/discordjs/discord.js/ "discord.js")
@@ -23,10 +24,10 @@
 ## [INSTALLATION](https://www.youtube.com/playlist?list=PLwsD_Qp4brFdANf4hj1a_bfLpSIjDRKXr "YouTube Playlist"):
 #### 1. Download the installer. [[HERE](https://github.com/QimieGames/MCHub-Skyblock-Bot/releases "MCHub Skyblock Bot Installer Download Page")]
 #### 2. Run the installer.
-#### 3. Run MCHub Prisons Bot.bat.
+#### 3. Run "MCHub Prisons Bot.exe".
 #### 4. Close it.
-#### 5. Configure config.json & .env file correctly.
-#### 6. Run MCHub Prisons Bot.exe.
+#### 5. Configure .env & config file correctly.
+#### 6. Run "MCHub Prisons Bot.exe".
 #### 7. Done, enjoy!
 
 ## [REPORT BUGS HERE](https://github.com/QimieGames/MCHub-Skyblock-Bot/issues "Report Issue(s)/Bug(s)")

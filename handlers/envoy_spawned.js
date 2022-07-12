@@ -11,7 +11,7 @@ module.exports = {
 
             const envoySpawnedAlertChannelName = discordBot.guilds.cache.get(guildID).channels.cache.get(envoySpawnedAlertChannelID).name;
 
-            const envoySpawnedPingRoleID = configValue.roles_id.envoy_ping;
+            const envoySpawnedPingRoleID = configValue.roles_id.envoy_spawned_ping;
 
             const envoySpawnedEmbed = new DiscordJS.MessageEmbed()
                 .setColor('#eb8334')
